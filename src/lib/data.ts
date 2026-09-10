@@ -109,7 +109,7 @@ export function predictDemand(crop: string, region: string, horizon = 6) {
     const noise = ((seed * (i + 7)) % 11) - 5;
     const predicted = Math.max(15, Math.round(base + season + trend + noise));
     history.push({
-      month: MONTHS[m],
+      month: MONTHS[m] as string,
       actual: i <= 0 ? Math.max(12, Math.round(predicted + (((seed + i) % 9) - 4))) : null,
       predicted,
     });
@@ -119,7 +119,7 @@ export function predictDemand(crop: string, region: string, horizon = 6) {
   const avgPast = past.reduce((a, h) => a + (h.actual ?? 0), 0) / Math.max(1, past.length);
   const avgFuture = future.reduce((a, h) => a + h.predicted, 0) / Math.max(1, future.length);
   const change = ((avgFuture - avgPast) / avgPast) * 100;
-  const peak = future.reduce((a, b) => (b.predicted > a.predicted ? b : a), future[0]);
+  const peak = [...future].sort((a, b) => b.predicted - a.predicted)[0];
   const confidence = 78 + (seed % 17);
   const suggestedPrice = Math.round((30 + (seed % 70)) * (1 + change / 200));
 
