@@ -33,9 +33,9 @@ function LoginPage() {
   function submit(e: React.FormEvent) {
     e.preventDefault();
     const next: Record<string, string> = {};
-    if (name.trim().length < 2) next.name = "Please enter your full name";
-    if (!/^\S+@\S+\.\S+$/.test(email)) next.email = "Enter a valid email address";
-    if (password.length < 6) next.password = "Password must be at least 6 characters";
+    if (name.trim().length < 2) next["name"] = "Please enter your full name";
+    if (!/^\S+@\S+\.\S+$/.test(email)) next["email"] = "Enter a valid email address";
+    if (password.length < 6) next["password"] = "Password must be at least 6 characters";
     setErrors(next);
     if (Object.keys(next).length) return;
 
@@ -112,7 +112,7 @@ function LoginPage() {
           </div>
 
           <form onSubmit={submit} className="mt-6 space-y-4" noValidate>
-            <Field label="Full name" error={errors.name}>
+            <Field label="Full name" error={errors["name"]}>
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -120,7 +120,7 @@ function LoginPage() {
                 className="w-full rounded-xl border border-input bg-card px-4 py-3 text-sm outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-ring/30"
               />
             </Field>
-            <Field label="Email" error={errors.email}>
+            <Field label="Email" error={errors["email"]}>
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -129,7 +129,7 @@ function LoginPage() {
                 className="w-full rounded-xl border border-input bg-card px-4 py-3 text-sm outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-ring/30"
               />
             </Field>
-            <Field label="Password" error={errors.password}>
+            <Field label="Password" error={errors["password"]}>
               <input
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -162,7 +162,7 @@ function LoginPage() {
   );
 }
 
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+function Field({ label, error, children }: { label: string; error?: string | undefined; children: React.ReactNode }) {
   return (
     <label className="block">
       <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
